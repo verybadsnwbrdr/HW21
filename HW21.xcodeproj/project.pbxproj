@@ -13,6 +13,8 @@
 		3A635CE829177356006AE4B5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3A635CE629177356006AE4B5 /* Main.storyboard */; };
 		3A635CEA29177358006AE4B5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3A635CE929177358006AE4B5 /* Assets.xcassets */; };
 		3A635CED29177358006AE4B5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3A635CEB29177358006AE4B5 /* LaunchScreen.storyboard */; };
+		3A635CF6291774E7006AE4B5 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 3A635CF5291774E7006AE4B5 /* SnapKit */; };
+		48BFBEB9A0AD284AC5AFF38D /* Pods_HW21.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8EC4FD1BF2DDB2DCCE44DC66 /* Pods_HW21.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +26,9 @@
 		3A635CE929177358006AE4B5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3A635CEC29177358006AE4B5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		3A635CEE29177358006AE4B5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		4C97FD8667525E9BB534DA97 /* Pods-HW21.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HW21.release.xcconfig"; path = "Target Support Files/Pods-HW21/Pods-HW21.release.xcconfig"; sourceTree = "<group>"; };
+		7760FCE95570C69D3DA9EB30 /* Pods-HW21.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HW21.debug.xcconfig"; path = "Target Support Files/Pods-HW21/Pods-HW21.debug.xcconfig"; sourceTree = "<group>"; };
+		8EC4FD1BF2DDB2DCCE44DC66 /* Pods_HW21.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HW21.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -31,6 +36,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				48BFBEB9A0AD284AC5AFF38D /* Pods_HW21.framework in Frameworks */,
+				3A635CF6291774E7006AE4B5 /* SnapKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -42,6 +49,8 @@
 			children = (
 				3A635CDF29177356006AE4B5 /* HW21 */,
 				3A635CDE29177356006AE4B5 /* Products */,
+				4B681DC1921465426BAE49C6 /* Pods */,
+				AB02D2103ABDC7AD67DEE052 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -67,6 +76,23 @@
 			path = HW21;
 			sourceTree = "<group>";
 		};
+		4B681DC1921465426BAE49C6 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				7760FCE95570C69D3DA9EB30 /* Pods-HW21.debug.xcconfig */,
+				4C97FD8667525E9BB534DA97 /* Pods-HW21.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		AB02D2103ABDC7AD67DEE052 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				8EC4FD1BF2DDB2DCCE44DC66 /* Pods_HW21.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -74,15 +100,20 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 3A635CF129177358006AE4B5 /* Build configuration list for PBXNativeTarget "HW21" */;
 			buildPhases = (
+				16E7F6B4D96DD44351EEBF71 /* [CP] Check Pods Manifest.lock */,
 				3A635CD929177356006AE4B5 /* Sources */,
 				3A635CDA29177356006AE4B5 /* Frameworks */,
 				3A635CDB29177356006AE4B5 /* Resources */,
+				95831FCC27B154B2B48583A1 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			name = HW21;
+			packageProductDependencies = (
+				3A635CF5291774E7006AE4B5 /* SnapKit */,
+			);
 			productName = HW21;
 			productReference = 3A635CDD29177356006AE4B5 /* HW21.app */;
 			productType = "com.apple.product-type.application";
@@ -111,6 +142,9 @@
 				Base,
 			);
 			mainGroup = 3A635CD429177356006AE4B5;
+			packageReferences = (
+				3A635CF4291774E7006AE4B5 /* XCRemoteSwiftPackageReference "SnapKit" */,
+			);
 			productRefGroup = 3A635CDE29177356006AE4B5 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -132,6 +166,48 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		16E7F6B4D96DD44351EEBF71 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-HW21-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		95831FCC27B154B2B48583A1 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-HW21/Pods-HW21-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-HW21/Pods-HW21-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-HW21/Pods-HW21-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		3A635CD929177356006AE4B5 /* Sources */ = {
@@ -282,6 +358,7 @@
 		};
 		3A635CF229177358006AE4B5 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7760FCE95570C69D3DA9EB30 /* Pods-HW21.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -295,6 +372,7 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -310,6 +388,7 @@
 		};
 		3A635CF329177358006AE4B5 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 4C97FD8667525E9BB534DA97 /* Pods-HW21.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -323,6 +402,7 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -358,6 +438,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		3A635CF4291774E7006AE4B5 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
+			requirement = {
+				branch = develop;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		3A635CF5291774E7006AE4B5 /* SnapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3A635CF4291774E7006AE4B5 /* XCRemoteSwiftPackageReference "SnapKit" */;
+			productName = SnapKit;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 3A635CD529177356006AE4B5 /* Project object */;
 }
