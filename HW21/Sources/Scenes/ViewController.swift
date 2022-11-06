@@ -11,11 +11,18 @@ import SnapKit
 
 class ViewController: UIViewController {
     
+    // MARK: - Properties
+    
+    private lazy var characters: [Character] = []
+    
     // MARK: - Elements
     
-    private lazy var characterImageView: UIImageView = {
-        let imageView = UIImageView()
-        return imageView
+    private lazy var tableView: UITableView = {
+        let tableView = UITableView(frame: .zero, style: .plain)
+        tableView.register(TableViewCell.self, forCellReuseIdentifier: TableViewCell.identifier)
+        tableView.dataSource = self
+        tableView.delegate = self
+        return tableView
     }()
     
     // MARK: - Lifecycle
@@ -30,11 +37,11 @@ class ViewController: UIViewController {
     // MARK: - Setup
     
     private func setupHierarchy() {
-        view.addSubview(characterImageView)
+        view.addSubview(tableView)
     }
     
     private func setupLayout() {
-        characterImageView.snp.makeConstraints { make in
+        tableView.snp.makeConstraints { make in
             make.top.left.right.bottom.equalTo(view)
         }
     }
@@ -47,27 +54,34 @@ class ViewController: UIViewController {
             let data = char.data
             let result = data.results
             let pathArr = result[0].thumbnail.path.split(separator: ":")
-            let path = "https:" + pathArr[1] + "." + result[0].thumbnail.extensionOfImage
+//            let path = "https:" + pathArr[1] + "." + result[0].thumbnail.extensionOfImage
 
-            guard let imageURL = URL(string: path),
-                  let imageView = try? Data(contentsOf: imageURL)
-            else { return }
-
-            self.characterImageView.image = UIImage(data: imageView)
-            print(stringURL)
-            print(result)
-//            self.tableView.reloadData()
+//            guard let imageURL = URL(string: path),
+//                  let imageView = try? Data(contentsOf: imageURL)
+//            else { return }
+            self.characters = result
+//            self.characterImageView.image = UIImage(data: imageView)
+//            print(stringURL)
+            print(result[0].name)
+            self.tableView.reloadData()
         }
     }
 }
 
 extension ViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        0
+        characters.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        UITableViewCell()
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: TableViewCell.identifier, for: indexPath) as? TableViewCell else { return UITableViewCell() }
+        cell.cellModel?.name = characters[indexPath.row].name
+        cell.cellModel?.id = characters[indexPath.row].id
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        80
     }
 }
 

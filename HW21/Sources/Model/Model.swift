@@ -31,3 +31,9 @@ struct Image: Decodable {
         case extensionOfImage = "extension"
     }
 }
+
+struct CellModel {
+    var id: Int
+    var name: String
+    var image: Data
+}
