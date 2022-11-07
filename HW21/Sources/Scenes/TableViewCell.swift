@@ -14,21 +14,17 @@ class TableViewCell: UITableViewCell {
     
     static let identifier = "TableViewCell"
     
-    // MARK: - Properties
+    // MARK: - Setup Cell
     
-    var cellModel: CellModel? {
-        didSet {
-            nameLabel.text = cellModel?.name // Приходит nil
-            idLabel.text = String(cellModel?.id ?? 0)
-//            guard let data = cellModel?.image,
-//                  let image = UIImage(data: data) else { return }
-//            characterImage.image = image
-        }
+    func setupCellContent(with model: Character) {
+        nameLabel.text = model.name
+        idLabel.text = String(model.id)
+        fetchCharacterImage(from: model.thumbnail)
     }
     
     // MARK: - Elements
     
-    private lazy var nameLabel: UILabel = {
+    lazy var nameLabel: UILabel = {
         let label = UILabel()
         return label
     }()
@@ -40,6 +36,7 @@ class TableViewCell: UITableViewCell {
     
     private lazy var characterImage: UIImageView = {
         let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFit
         return imageView
     }()
     
@@ -71,13 +68,39 @@ class TableViewCell: UITableViewCell {
         }
         
         nameLabel.snp.makeConstraints { make in
-            make.left.equalTo(characterImage.snp.right).offset(20)
+            make.left.equalTo(characterImage.snp.right).offset(15)
             make.top.equalTo(snp.top).offset(20)
         }
         
         idLabel.snp.makeConstraints { make in
             make.left.equalTo(nameLabel)
-            make.top.equalTo(nameLabel.snp.bottom).offset(20)
+            make.bottom.equalTo(snp.bottom).offset(-15)
         }
+    }
+    
+    private func fetchCharacterImage(from imageData: Image) {
+        let pathArr = imageData.path.split(separator: ":")
+        let path = "https:" + pathArr[1] + "." + imageData.extensionOfImage
+        
+        guard let imageURL = URL(string: path) else { return }
+        DispatchQueue.global(qos: .utility).async {
+            do {
+                let image = try Data(contentsOf: imageURL)
+                DispatchQueue.main.async { [unowned self] in
+                    characterImage.image = UIImage(data: image)
+                }
+            } catch {
+                print("Error")
+            }
+        }
+    }
+    
+    // MARK: - PrepareForReuse
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        nameLabel.text = nil
+        idLabel.text = nil
+        characterImage.image = nil
     }
 }

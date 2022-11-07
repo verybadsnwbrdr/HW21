@@ -17,8 +17,8 @@ struct CharacterDataContainer: Decodable {
 }
 
 struct Character: Decodable {
-    let id: Int
-    let name: String
+    var id: Int
+    var name: String
     let thumbnail: Image
 }
 
@@ -32,8 +32,3 @@ struct Image: Decodable {
     }
 }
 
-struct CellModel {
-    var id: Int
-    var name: String
-    var image: Data
-}
