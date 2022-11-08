@@ -36,7 +36,9 @@ class TableViewCell: UITableViewCell {
     
     private lazy var characterImage: UIImageView = {
         let imageView = UIImageView()
-        imageView.contentMode = .scaleAspectFit
+        imageView.clipsToBounds = true
+        imageView.layer.cornerRadius = 35
+        imageView.image = UIImage(named: "question")
         return imageView
     }()
     
@@ -64,7 +66,7 @@ class TableViewCell: UITableViewCell {
         characterImage.snp.makeConstraints { make in
             make.left.equalTo(snp.left).offset(20)
             make.centerY.equalTo(snp.centerY)
-            make.width.equalTo(80)
+            make.width.height.equalTo(70)
         }
         
         nameLabel.snp.makeConstraints { make in
@@ -79,9 +81,10 @@ class TableViewCell: UITableViewCell {
     }
     
     private func fetchCharacterImage(from imageData: Image) {
+        guard !imageData.path.contains("image_not_available") else { return }
         let pathArr = imageData.path.split(separator: ":")
         let path = "https:" + pathArr[1] + "." + imageData.extensionOfImage
-        
+
         guard let imageURL = URL(string: path) else { return }
         DispatchQueue.global(qos: .utility).async {
             do {
@@ -101,6 +104,6 @@ class TableViewCell: UITableViewCell {
         super.prepareForReuse()
         nameLabel.text = nil
         idLabel.text = nil
-        characterImage.image = nil
+        characterImage.image = UIImage(named: "question")
     }
 }
