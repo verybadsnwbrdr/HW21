@@ -1,0 +1,176 @@
+//
+//  ModalViewController.swift
+//  HW21
+//
+//  Created by Anton on 09.11.2022.
+//
+
+import UIKit
+import SnapKit
+import Alamofire
+
+class ModalView: UIViewController, FetchImageProtocol {
+    
+    // MARK: - Properties
+    
+    private var character: Character?
+    private var comics: [Comic] = []
+        
+    // MARK: - SetupView
+    
+    func setupViewContent(with model: Character) {
+        self.character = model
+        nameLabel.text = model.name
+        idLabel.text = "ID: " + String(model.id)
+        fetchCharacterImage(from: model.thumbnail) { [unowned self] dataImage in
+            characterImage.image = UIImage(data: dataImage)
+        }
+    }
+    
+    
+    // MARK: - Elements
+    
+    private lazy var collectionView: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.register(CollectionViewCell.self, forCellWithReuseIdentifier: CollectionViewCell.identifier)
+        collectionView.delegate = self
+        collectionView.dataSource = self
+        return collectionView
+    }()
+    
+    private lazy var modalTitleLabel: UILabel = {
+        let label = UILabel()
+        label.text = "О персонаже"
+        label.font = UIFont.boldSystemFont(ofSize: 20)
+        return label
+    }()
+    
+    private lazy var nameLabel: UILabel = {
+        let label = UILabel()
+        label.numberOfLines = 0
+        label.font = UIFont.boldSystemFont(ofSize: 22)
+        return label
+    }()
+    
+    private lazy var idLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 16)
+        return label
+    }()
+    
+    private lazy var characterImage: UIImageView =  {
+        let imageView = UIImageView()
+        imageView.clipsToBounds = true
+        imageView.layer.cornerRadius = 20
+        imageView.image = UIImage(named: "question")
+        return imageView
+    }()
+    
+    private lazy var stack: UIStackView = {
+        let stack = UIStackView()
+        stack.alignment = .leading
+        stack.axis = .vertical
+        stack.contentMode = .center
+        stack.spacing = 10
+        return stack
+    }()
+    
+    private lazy var collectionHeader: UILabel = {
+        let label = UILabel()
+        label.text = "Комиксы с этим персонажем"
+        label.font = UIFont.boldSystemFont(ofSize: 20)
+        return label
+    }()
+    
+    // MARK: - Lifecycle
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        view.backgroundColor = .white
+        setupHierarchy()
+        setupLayout()
+    }
+    
+    // MARK: - Setup
+    
+    private func setupHierarchy() {
+        view.addSubview(modalTitleLabel)
+        view.addSubview(characterImage)
+        view.addSubview(stack)
+        stack.addArrangedSubview(nameLabel)
+        stack.addArrangedSubview(idLabel)
+        view.addSubview(collectionHeader)
+        view.addSubview(collectionView)
+    }
+    
+    private func setupLayout() {
+        modalTitleLabel.snp.makeConstraints { make in
+            make.top.equalTo(view.snp.top).offset(20)
+            make.centerX.equalTo(view.snp.centerX)
+        }
+        
+        characterImage.snp.makeConstraints { make in
+            make.left.equalTo(view.snp.left).offset(20)
+            make.top.equalTo(modalTitleLabel.snp.bottom).offset(10)
+            make.width.height.equalTo(180)
+        }
+
+        stack.snp.makeConstraints { make in
+            make.centerY.equalTo(characterImage.snp.centerY)
+            make.left.equalTo(characterImage.snp.right).offset(20)
+            make.right.equalTo(view.snp.right).offset(-20)
+        }
+        
+        collectionHeader.snp.makeConstraints { make in
+            make.centerX.equalTo(view)
+            make.top.equalTo(characterImage.snp.bottom).offset(10)
+        }
+        
+        collectionView.snp.makeConstraints { make in
+            make.top.equalTo(collectionHeader.snp.bottom).offset(10)
+            make.left.right.bottom.equalTo(view.safeAreaLayoutGuide)
+        }
+    }
+    
+    func fetchComics(with path: String) {
+        let stringQueryItems = CharacterURL().getStringQueryItems()
+        let stringURL = path + stringQueryItems
+        let request = AF.request(stringURL)
+        request.responseDecodable(of: ComicDataWrapper.self) { data in
+            guard let char = data.value else { return }
+            let data = char.data.results
+            self.comics = data
+            self.collectionView.reloadData()
+        }
+    }
+}
+
+extension ModalView: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        6
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CollectionViewCell.identifier, for: indexPath) as? CollectionViewCell,
+              let model = character?.comics.items[indexPath.item] else { return UICollectionViewCell() }
+        fetchComics(with: model.resourceURI)
+        cell.setupCellContent(with: comics[indexPath.item])
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        CGSize(width: (view.frame.width / 2) - 25, height: (view.frame.height / 3) - 5)
+    }
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        10
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        10
+    }
+}

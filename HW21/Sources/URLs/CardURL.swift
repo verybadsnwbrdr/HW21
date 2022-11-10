@@ -23,10 +23,10 @@ struct CharacterURL {
     }
     
     init() {
-        set()
+        setURL()
     }
     
-    private mutating func set() {
+    private mutating func setURL() {
         components.scheme = scheme
         components.host = host
         components.path = path
@@ -35,7 +35,11 @@ struct CharacterURL {
                                  URLQueryItem(name: "hash", value: hash)]
     }
     
-    public func getStringUrl() -> String {
+    public func getStringURL() -> String {
         components.string ?? "Error"
+    }
+    
+    public func getStringQueryItems() -> String {
+        components.string?.components(separatedBy: "characters").last ?? "Error"
     }
 }

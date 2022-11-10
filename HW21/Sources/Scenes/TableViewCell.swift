@@ -8,29 +8,33 @@
 import UIKit
 import SnapKit
 
-class TableViewCell: UITableViewCell {
+class TableViewCell: UITableViewCell, FetchImageProtocol {
     
     // MARK: - Identifier
     
     static let identifier = "TableViewCell"
     
-    // MARK: - Setup Cell
+    // MARK: - SetupCell
     
     func setupCellContent(with model: Character) {
         nameLabel.text = model.name
-        idLabel.text = String(model.id)
-        fetchCharacterImage(from: model.thumbnail)
+        idLabel.text = "ID: " + String(model.id)
+        fetchCharacterImage(from: model.thumbnail) { [unowned self] dataImage in
+            characterImage.image = UIImage(data: dataImage)
+        }
     }
     
     // MARK: - Elements
     
     lazy var nameLabel: UILabel = {
         let label = UILabel()
+        label.font = UIFont.boldSystemFont(ofSize: 19)
         return label
     }()
     
     private lazy var idLabel: UILabel = {
         let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 15)
         return label
     }()
     
@@ -70,31 +74,13 @@ class TableViewCell: UITableViewCell {
         }
         
         nameLabel.snp.makeConstraints { make in
-            make.left.equalTo(characterImage.snp.right).offset(15)
+            make.left.equalTo(characterImage.snp.right).offset(20)
             make.top.equalTo(snp.top).offset(20)
         }
         
         idLabel.snp.makeConstraints { make in
             make.left.equalTo(nameLabel)
             make.bottom.equalTo(snp.bottom).offset(-15)
-        }
-    }
-    
-    private func fetchCharacterImage(from imageData: Image) {
-        guard !imageData.path.contains("image_not_available") else { return }
-        let pathArr = imageData.path.split(separator: ":")
-        let path = "https:" + pathArr[1] + "." + imageData.extensionOfImage
-
-        guard let imageURL = URL(string: path) else { return }
-        DispatchQueue.global(qos: .utility).async {
-            do {
-                let image = try Data(contentsOf: imageURL)
-                DispatchQueue.main.async { [unowned self] in
-                    characterImage.image = UIImage(data: image)
-                }
-            } catch {
-                print("Error")
-            }
         }
     }
     

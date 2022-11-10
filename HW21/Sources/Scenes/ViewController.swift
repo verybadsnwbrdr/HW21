@@ -13,7 +13,7 @@ class ViewController: UIViewController {
     
     // MARK: - Properties
     
-    private lazy var characters: [Character] = []
+    private var characters: [Character] = []
     
     // MARK: - Elements
     
@@ -46,13 +46,14 @@ class ViewController: UIViewController {
         }
     }
     
-    func fetchCharacter() {
-        let stringURL = CharacterURL().getStringUrl()
+    private func fetchCharacter() {
+        let stringURL = CharacterURL().getStringURL()
         let request = AF.request(stringURL)
         request.responseDecodable(of: CharacterDataWrapper.self) { data in
             guard let char = data.value else { return }
             let data = char.data.results
             self.characters = data
+            print(data)
             self.tableView.reloadData()
         }
     }
@@ -72,6 +73,13 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         80
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let model = characters[indexPath.row]
+        let viewController = ModalView()
+        viewController.setupViewContent(with: model)
+        present(viewController, animated: true)
     }
 }
 
