@@ -8,38 +8,41 @@
 import UIKit
 import SnapKit
 
-class TableViewCell: UITableViewCell {
+class TableViewCell: UITableViewCell, FetchImageProtocol {
     
     // MARK: - Identifier
     
     static let identifier = "TableViewCell"
     
-    // MARK: - Properties
+    // MARK: - SetupCell
     
-    var cellModel: CellModel? {
-        didSet {
-            nameLabel.text = cellModel?.name // Приходит nil
-            idLabel.text = String(cellModel?.id ?? 0)
-//            guard let data = cellModel?.image,
-//                  let image = UIImage(data: data) else { return }
-//            characterImage.image = image
+    func setupCellContent(with model: Character) {
+        nameLabel.text = model.name
+        idLabel.text = "ID: " + String(model.id)
+        fetchCharacterImage(from: model.thumbnail) { [unowned self] dataImage in
+            characterImage.image = UIImage(data: dataImage)
         }
     }
     
     // MARK: - Elements
     
-    private lazy var nameLabel: UILabel = {
+    lazy var nameLabel: UILabel = {
         let label = UILabel()
+        label.font = UIFont.boldSystemFont(ofSize: 19)
         return label
     }()
     
     private lazy var idLabel: UILabel = {
         let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 15)
         return label
     }()
     
     private lazy var characterImage: UIImageView = {
         let imageView = UIImageView()
+        imageView.clipsToBounds = true
+        imageView.layer.cornerRadius = 35
+        imageView.image = UIImage(named: "question")
         return imageView
     }()
     
@@ -67,7 +70,7 @@ class TableViewCell: UITableViewCell {
         characterImage.snp.makeConstraints { make in
             make.left.equalTo(snp.left).offset(20)
             make.centerY.equalTo(snp.centerY)
-            make.width.equalTo(80)
+            make.width.height.equalTo(70)
         }
         
         nameLabel.snp.makeConstraints { make in
@@ -77,7 +80,16 @@ class TableViewCell: UITableViewCell {
         
         idLabel.snp.makeConstraints { make in
             make.left.equalTo(nameLabel)
-            make.top.equalTo(nameLabel.snp.bottom).offset(20)
+            make.bottom.equalTo(snp.bottom).offset(-15)
         }
+    }
+    
+    // MARK: - PrepareForReuse
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        nameLabel.text = nil
+        idLabel.text = nil
+        characterImage.image = UIImage(named: "question")
     }
 }

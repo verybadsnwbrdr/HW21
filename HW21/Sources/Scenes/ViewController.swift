@@ -13,7 +13,7 @@ class ViewController: UIViewController {
     
     // MARK: - Properties
     
-    private lazy var characters: [Character] = []
+    private var characters: [Character] = []
     
     // MARK: - Elements
     
@@ -46,23 +46,14 @@ class ViewController: UIViewController {
         }
     }
     
-    func fetchCharacter() {
-        let stringURL = CharacterURL().getStringUrl()
+    private func fetchCharacter() {
+        let stringURL = CharacterURL().getStringURL()
         let request = AF.request(stringURL)
         request.responseDecodable(of: CharacterDataWrapper.self) { data in
             guard let char = data.value else { return }
-            let data = char.data
-            let result = data.results
-            let pathArr = result[0].thumbnail.path.split(separator: ":")
-//            let path = "https:" + pathArr[1] + "." + result[0].thumbnail.extensionOfImage
-
-//            guard let imageURL = URL(string: path),
-//                  let imageView = try? Data(contentsOf: imageURL)
-//            else { return }
-            self.characters = result
-//            self.characterImageView.image = UIImage(data: imageView)
-//            print(stringURL)
-            print(result[0].name)
+            let data = char.data.results
+            self.characters = data
+            print(data)
             self.tableView.reloadData()
         }
     }
@@ -74,14 +65,21 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let model = characters[indexPath.row]
         guard let cell = tableView.dequeueReusableCell(withIdentifier: TableViewCell.identifier, for: indexPath) as? TableViewCell else { return UITableViewCell() }
-        cell.cellModel?.name = characters[indexPath.row].name
-        cell.cellModel?.id = characters[indexPath.row].id
+        cell.setupCellContent(with: model)
         return cell
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         80
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let model = characters[indexPath.row]
+        let viewController = ModalView()
+        viewController.setupViewContent(with: model)
+        present(viewController, animated: true)
     }
 }
 
