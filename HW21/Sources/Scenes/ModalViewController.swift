@@ -14,7 +14,6 @@ class ModalView: UIViewController, FetchImageProtocol {
     // MARK: - Properties
     
     private var character: Character?
-    private var comics: [Comic] = []
         
     // MARK: - SetupView
     
@@ -26,7 +25,6 @@ class ModalView: UIViewController, FetchImageProtocol {
             characterImage.image = UIImage(data: dataImage)
         }
     }
-    
     
     // MARK: - Elements
     
@@ -42,20 +40,20 @@ class ModalView: UIViewController, FetchImageProtocol {
     private lazy var modalTitleLabel: UILabel = {
         let label = UILabel()
         label.text = "О персонаже"
-        label.font = UIFont.boldSystemFont(ofSize: 20)
+        label.font = UIFont.boldSystemFont(ofSize: 18)
         return label
     }()
     
     private lazy var nameLabel: UILabel = {
         let label = UILabel()
         label.numberOfLines = 0
-        label.font = UIFont.boldSystemFont(ofSize: 22)
+        label.font = UIFont.boldSystemFont(ofSize: 20)
         return label
     }()
     
     private lazy var idLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 16)
+        label.font = UIFont.systemFont(ofSize: 14)
         return label
     }()
     
@@ -79,7 +77,7 @@ class ModalView: UIViewController, FetchImageProtocol {
     private lazy var collectionHeader: UILabel = {
         let label = UILabel()
         label.text = "Комиксы с этим персонажем"
-        label.font = UIFont.boldSystemFont(ofSize: 20)
+        label.font = UIFont.boldSystemFont(ofSize: 18)
         return label
     }()
     
@@ -133,44 +131,67 @@ class ModalView: UIViewController, FetchImageProtocol {
         }
     }
     
-    func fetchComics(with path: String) {
+    private func fetchComics(with path: String, complition: @escaping ([Comic]) -> ()) {
         let stringQueryItems = CharacterURL().getStringQueryItems()
         let stringURL = path + stringQueryItems
         let request = AF.request(stringURL)
         request.responseDecodable(of: ComicDataWrapper.self) { data in
             guard let char = data.value else { return }
             let data = char.data.results
-            self.comics = data
-            self.collectionView.reloadData()
+            complition(data)
         }
     }
 }
 
 extension ModalView: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        6
+        guard let count = character?.comics.items.count else { return 0 }
+        return count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CollectionViewCell.identifier, for: indexPath) as? CollectionViewCell,
               let model = character?.comics.items[indexPath.item] else { return UICollectionViewCell() }
-        fetchComics(with: model.resourceURI)
-        cell.setupCellContent(with: comics[indexPath.item])
+        fetchComics(with: model.resourceURI) { comics in
+            guard let comic = comics.first else { return }
+            cell.setupCellContent(with: comic)
+        }
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        CGSize(width: (view.frame.width / 2) - 25, height: (view.frame.height / 3) - 5)
+        CGSize(width: (view.frame.width / 2) - EdgeInsets.widthSpacing,
+               height: (view.frame.width / 1.5) - EdgeInsets.heightSpacing)
     }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
+        UIEdgeInsets(top: EdgeInsets.topInsets,
+                     left: EdgeInsets.leftAndRightInsets,
+                     bottom: EdgeInsets.bottomInsets,
+                     right: EdgeInsets.leftAndRightInsets)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        10
+        EdgeInsets.spacingInSection
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        10
+        EdgeInsets.spacingInSection
+    }
+}
+
+extension ModalView {
+    private enum EdgeInsets {
+        static let leftAndRightInsets: CGFloat  = 20
+        static let bottomInsets: CGFloat = 20
+        static let topInsets: CGFloat = 0
+        static let spacingInSection: CGFloat = 10
+        
+        static var widthSpacing: CGFloat {
+            (Self.leftAndRightInsets * 2 + Self.spacingInSection) / 2
+        }
+        
+        static var heightSpacing: CGFloat {
+            (Self.spacingInSection) / 2
+        }
     }
 }

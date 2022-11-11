@@ -53,7 +53,6 @@ class ViewController: UIViewController {
             guard let char = data.value else { return }
             let data = char.data.results
             self.characters = data
-            print(data)
             self.tableView.reloadData()
         }
     }
