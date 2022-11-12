@@ -16,10 +16,10 @@ final class TableViewCell: UITableViewCell, FetchImageProtocol {
     
     // MARK: - SetupCell
     
-    func setupCellContent(with model: Character) {
-        nameLabel.text = model.name
-        idLabel.text = "ID: " + String(model.id)
-        fetchCharacterImage(from: model.thumbnail) { [unowned self] dataImage in
+    func setupCellContent(with characterModel: Character) {
+        nameLabel.text = characterModel.name
+        idLabel.text = "ID: " + String(characterModel.id)
+        fetchCharacterImage(from: characterModel.thumbnail) { [unowned self] dataImage in
             characterImage.image = UIImage(data: dataImage)
         }
     }

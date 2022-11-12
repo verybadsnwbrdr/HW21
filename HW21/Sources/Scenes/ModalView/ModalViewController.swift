@@ -17,11 +17,11 @@ final class ModalView: UIViewController, FetchImageProtocol {
         
     // MARK: - SetupView
     
-    func setupViewContent(with model: Character) {
-        self.character = model
-        nameLabel.text = model.name
-        idLabel.text = "ID: " + String(model.id)
-        fetchCharacterImage(from: model.thumbnail) { [unowned self] dataImage in
+    func setupViewContent(with characterModel: Character) {
+        self.character = characterModel
+        nameLabel.text = characterModel.name
+        idLabel.text = "ID: " + String(characterModel.id)
+        fetchCharacterImage(from: characterModel.thumbnail) { [unowned self] dataImage in
             characterImage.image = UIImage(data: dataImage)
         }
     }
