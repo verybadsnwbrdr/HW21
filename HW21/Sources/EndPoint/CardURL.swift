@@ -13,7 +13,7 @@ struct CharacterURL {
     private let scheme = "https"
     private let host = "gateway.marvel.com"
     private let path = "/v1/public/characters"
-
+    
     private let name = "name"
     private let ts = "hw19"
     private let publicKey = "ca67588a7b5d724d5f0da0314d1e34a8"
@@ -24,21 +24,25 @@ struct CharacterURL {
         (ts + privateKey + publicKey).md5()
     }
     
-    init(characterName: String? = nil) {
+    init(characterName: String = "") {
         setURL(with: characterName)
     }
     
-    private mutating func setURL(with characterName: String?) {
+    private mutating func setURL(with characterName: String) {
         components.scheme = scheme
         components.host = host
         components.path = path
-        if let characterName = characterName {
+        setQueryItems(with: characterName)
+        components.queryItems = queryItems
+    }
+    
+    private mutating func setQueryItems(with characterName: String) {
+        if characterName != "" {
             queryItems.append(URLQueryItem(name: name, value: characterName))
         }
         queryItems.append(contentsOf: [URLQueryItem(name: "ts", value: ts),
                                        URLQueryItem(name: "apikey", value: publicKey),
                                        URLQueryItem(name: "hash", value: hash)])
-        components.queryItems = queryItems
     }
     
     public func getStringURL() -> String {

@@ -9,7 +9,7 @@ import UIKit
 import Alamofire
 import SnapKit
 
-final class MainViewController: UIViewController {
+final class MainViewController: UIViewController, ShowAlertProtocol {
     
     // MARK: - Properties
     
@@ -35,7 +35,7 @@ final class MainViewController: UIViewController {
     }()
     
     // MARK: - Lifecycle
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViewController()
@@ -62,14 +62,15 @@ final class MainViewController: UIViewController {
         }
     }
     
-    private func fetchCharacter(with name: String? = nil) {
+    private func fetchCharacter(with name: String = "") {
         let stringURL = CharacterURL(characterName: name).getStringURL()
         let request = AF.request(stringURL)
-        request.responseDecodable(of: CharacterDataWrapper.self) { data in
-            guard let char = data.value else { return }
+        request.responseDecodable(of: CharacterDataWrapper.self) { [unowned self] response in
+            showAlert(error: response.error)
+            guard let char = response.value else { return }
             let data = char.data.results
-            self.characters = data
-            self.tableView.reloadData()
+            characters = data
+            tableView.reloadData()
         }
     }
 }
@@ -93,7 +94,7 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         let model = characters[indexPath.row]
-        let viewController = ModalView()
+        let viewController = ModalViewController()
         viewController.setupViewContent(with: model)
         present(viewController, animated: true)
     }
@@ -101,11 +102,7 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
 
 extension MainViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
-        if let desiredCharacter = searchController.searchBar.text,
-           desiredCharacter != "" {
-            fetchCharacter(with: desiredCharacter)
-        } else {
-            fetchCharacter()
-        }
+        guard let desiredCharacter = searchController.searchBar.text else { return }
+        fetchCharacter(with: desiredCharacter)
     }
 }

@@ -20,6 +20,7 @@
 		3ADE347F291C078200953336 /* ModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ADE347E291C078200953336 /* ModalViewController.swift */; };
 		3ADE3481291D2DFF00953336 /* FetchImageProtocol+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ADE3480291D2DFF00953336 /* FetchImageProtocol+Extension.swift */; };
 		3ADE3483291D316400953336 /* CollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ADE3482291D316400953336 /* CollectionViewCell.swift */; };
+		3ADE348B291FA4DD00953336 /* ShowAlertProtocol+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ADE348A291FA4DD00953336 /* ShowAlertProtocol+Extension.swift */; };
 		48BFBEB9A0AD284AC5AFF38D /* Pods_HW21.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8EC4FD1BF2DDB2DCCE44DC66 /* Pods_HW21.framework */; };
 /* End PBXBuildFile section */
 
@@ -38,6 +39,7 @@
 		3ADE347E291C078200953336 /* ModalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModalViewController.swift; sourceTree = "<group>"; };
 		3ADE3480291D2DFF00953336 /* FetchImageProtocol+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FetchImageProtocol+Extension.swift"; sourceTree = "<group>"; };
 		3ADE3482291D316400953336 /* CollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewCell.swift; sourceTree = "<group>"; };
+		3ADE348A291FA4DD00953336 /* ShowAlertProtocol+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ShowAlertProtocol+Extension.swift"; sourceTree = "<group>"; };
 		4C97FD8667525E9BB534DA97 /* Pods-HW21.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HW21.release.xcconfig"; path = "Target Support Files/Pods-HW21/Pods-HW21.release.xcconfig"; sourceTree = "<group>"; };
 		7760FCE95570C69D3DA9EB30 /* Pods-HW21.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HW21.debug.xcconfig"; path = "Target Support Files/Pods-HW21/Pods-HW21.debug.xcconfig"; sourceTree = "<group>"; };
 		8EC4FD1BF2DDB2DCCE44DC66 /* Pods_HW21.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HW21.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -161,6 +163,7 @@
 			children = (
 				3A635D06291782F7006AE4B5 /* String+Extension.swift */,
 				3ADE3480291D2DFF00953336 /* FetchImageProtocol+Extension.swift */,
+				3ADE348A291FA4DD00953336 /* ShowAlertProtocol+Extension.swift */,
 			);
 			path = "Protocols & Extensions";
 			sourceTree = "<group>";
@@ -323,6 +326,7 @@
 				3ADE347F291C078200953336 /* ModalViewController.swift in Sources */,
 				3ADE3481291D2DFF00953336 /* FetchImageProtocol+Extension.swift in Sources */,
 				3A635D01291778B8006AE4B5 /* TableViewCell.swift in Sources */,
+				3ADE348B291FA4DD00953336 /* ShowAlertProtocol+Extension.swift in Sources */,
 				3A635D07291782F7006AE4B5 /* String+Extension.swift in Sources */,
 				3A635CE529177356006AE4B5 /* MainViewController.swift in Sources */,
 				3A635CE129177356006AE4B5 /* AppDelegate.swift in Sources */,

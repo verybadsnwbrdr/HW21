@@ -6,26 +6,20 @@
 //
 
 import UIKit
+import Alamofire
 
 protocol FetchImageProtocol {
-    func fetchCharacterImage(from imageData: Image, complitionOnMainThread: @escaping (Data) -> ())
+    func fetchCharacterImage(from imageData: Image,
+                             complition: @escaping (AFDataResponse<Data>) -> ())
 }
 
 extension FetchImageProtocol {
-    func fetchCharacterImage(from imageData: Image, complitionOnMainThread: @escaping (Data) -> ()) {
+    func fetchCharacterImage(from imageData: Image,
+                             complition: @escaping (AFDataResponse<Data>) -> ()) {
         let endPoint = imageData.path + "." + imageData.extensionOfImage
-        guard !imageData.path.contains("image_not_available"),
-              let imageURL = URL(string: endPoint) else { return }
-        
-        DispatchQueue.global(qos: .utility).async {
-            do {
-                let responseData = try Data(contentsOf: imageURL)
-                DispatchQueue.main.async {
-                    complitionOnMainThread(responseData)
-                }
-            } catch let error {
-                print("Error - \(error)")
-            }
-        }
+        guard !imageData.path.contains("image_not_available") else { return }
+        let request = AF.request(endPoint)
+        request.responseData(completionHandler: complition)
     }
 }
+

@@ -9,20 +9,24 @@ import UIKit
 import SnapKit
 import Alamofire
 
-final class ModalView: UIViewController, FetchImageProtocol {
+final class ModalViewController: UIViewController, FetchImageProtocol, ShowAlertProtocol {
     
     // MARK: - Properties
     
     private var character: Character?
-        
+    
     // MARK: - SetupView
     
     func setupViewContent(with characterModel: Character) {
         self.character = characterModel
         nameLabel.text = characterModel.name
         idLabel.text = "ID: " + String(characterModel.id)
-        fetchCharacterImage(from: characterModel.thumbnail) { [unowned self] dataImage in
-            characterImage.image = UIImage(data: dataImage)
+        fetchCharacterImage(from: characterModel.thumbnail) { [unowned self] response in
+            guard let data = response.data else {
+                showAlert(error: response.error)
+                return
+            }
+            characterImage.image = UIImage(data: data)
         }
     }
     
@@ -113,7 +117,7 @@ final class ModalView: UIViewController, FetchImageProtocol {
             make.top.equalTo(modalTitleLabel.snp.bottom).offset(10)
             make.width.height.equalTo(180)
         }
-
+        
         stack.snp.makeConstraints { make in
             make.centerY.equalTo(characterImage.snp.centerY)
             make.left.equalTo(characterImage.snp.right).offset(20)
@@ -147,7 +151,7 @@ final class ModalView: UIViewController, FetchImageProtocol {
 
 // MARK: - Delegates and DataSource
 
-extension ModalView: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+extension ModalViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         guard let count = character?.comics.items.count else { return 0 }
         return count
@@ -185,7 +189,7 @@ extension ModalView: UICollectionViewDataSource, UICollectionViewDelegate, UICol
 
 // MARK: - EdgeInsets
 
-extension ModalView {
+extension ModalViewController {
     private enum EdgeInsets {
         static let leftAndRightInsets: CGFloat  = 20
         static let bottomInsets: CGFloat = 20

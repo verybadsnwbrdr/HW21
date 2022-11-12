@@ -8,7 +8,7 @@
 import UIKit
 import SnapKit
 
-final class TableViewCell: UITableViewCell, FetchImageProtocol {
+final class TableViewCell: UITableViewCell, FetchImageProtocol, ShowAlertProtocol {
     
     // MARK: - Identifier
     
@@ -19,8 +19,12 @@ final class TableViewCell: UITableViewCell, FetchImageProtocol {
     func setupCellContent(with characterModel: Character) {
         nameLabel.text = characterModel.name
         idLabel.text = "ID: " + String(characterModel.id)
-        fetchCharacterImage(from: characterModel.thumbnail) { [unowned self] dataImage in
-            characterImage.image = UIImage(data: dataImage)
+        fetchCharacterImage(from: characterModel.thumbnail) { [unowned self] response in
+            guard let data = response.data else {
+                showAlert(error: response.error)
+                return
+            }
+            characterImage.image = UIImage(data: data)
         }
     }
     
@@ -47,7 +51,7 @@ final class TableViewCell: UITableViewCell, FetchImageProtocol {
     }()
     
     // MARK: - Lifecycle
-
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupHierarchy()
