@@ -8,7 +8,7 @@
 import UIKit
 import SnapKit
 
-class CollectionViewCell: UICollectionViewCell, FetchImageProtocol {
+final class CollectionViewCell: UICollectionViewCell, FetchImageProtocol {
     
     // MARK: - Identifier
     
