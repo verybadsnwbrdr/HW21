@@ -8,7 +8,7 @@
 import UIKit
 import SnapKit
 
-final class CollectionViewCell: UICollectionViewCell, FetchImageProtocol {
+final class CollectionViewCell: UICollectionViewCell, FetchImageProtocol, ShowAlertProtocol {
     
     // MARK: - Identifier
     
@@ -18,8 +18,12 @@ final class CollectionViewCell: UICollectionViewCell, FetchImageProtocol {
     
     func setupCellContent(with comicModel: Comic) {
         comicsTitle.text = comicModel.title
-        fetchCharacterImage(from: comicModel.thumbnail) { [unowned self] dataImage in
-            comicsImage.image = UIImage(data: dataImage)
+        fetchCharacterImage(from: comicModel.thumbnail) {  [unowned self] response in
+            guard let data = response.data else {
+                showAlert(error: response.error)
+                return
+            }
+            comicsImage.image = UIImage(data: data)
         }
     }
     
@@ -60,7 +64,7 @@ final class CollectionViewCell: UICollectionViewCell, FetchImageProtocol {
     private func setupHierarchy() {
         addSubview(comicsTitle)
         addSubview(comicsImage)
-
+        
     }
     
     private func setupLayout() {
