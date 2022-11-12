@@ -9,7 +9,7 @@ import UIKit
 import SnapKit
 import Alamofire
 
-class ModalView: UIViewController, FetchImageProtocol {
+final class ModalView: UIViewController, FetchImageProtocol {
     
     // MARK: - Properties
     
@@ -131,6 +131,8 @@ class ModalView: UIViewController, FetchImageProtocol {
         }
     }
     
+    // MARK: - NetWorking
+    
     private func fetchComics(with path: String, complition: @escaping ([Comic]) -> ()) {
         let stringQueryItems = CharacterURL().getStringQueryItems()
         let stringURL = path + stringQueryItems
@@ -142,6 +144,8 @@ class ModalView: UIViewController, FetchImageProtocol {
         }
     }
 }
+
+// MARK: - Delegates and DataSource
 
 extension ModalView: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -178,6 +182,8 @@ extension ModalView: UICollectionViewDataSource, UICollectionViewDelegate, UICol
         EdgeInsets.spacingInSection
     }
 }
+
+// MARK: - EdgeInsets
 
 extension ModalView {
     private enum EdgeInsets {

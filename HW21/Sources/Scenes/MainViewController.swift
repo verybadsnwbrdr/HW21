@@ -9,7 +9,7 @@ import UIKit
 import Alamofire
 import SnapKit
 
-class ViewController: UIViewController {
+final class MainViewController: UIViewController {
     
     // MARK: - Properties
     
@@ -25,16 +25,32 @@ class ViewController: UIViewController {
         return tableView
     }()
     
+    private lazy var searchController: UISearchController = {
+        let controller = UISearchController(searchResultsController: nil)
+        controller.searchResultsUpdater = self
+        controller.obscuresBackgroundDuringPresentation = false
+        controller.searchBar.placeholder = "Search Character"
+        definesPresentationContext = true
+        return controller
+    }()
+    
     // MARK: - Lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupViewController()
         fetchCharacter()
         setupHierarchy()
         setupLayout()
     }
     
     // MARK: - Setup
+    
+    private func setupViewController() {
+        title = "Каталог персонажей"
+        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationItem.searchController = searchController
+    }
     
     private func setupHierarchy() {
         view.addSubview(tableView)
@@ -46,8 +62,8 @@ class ViewController: UIViewController {
         }
     }
     
-    private func fetchCharacter() {
-        let stringURL = CharacterURL().getStringURL()
+    private func fetchCharacter(with name: String? = nil) {
+        let stringURL = CharacterURL(characterName: name).getStringURL()
         let request = AF.request(stringURL)
         request.responseDecodable(of: CharacterDataWrapper.self) { data in
             guard let char = data.value else { return }
@@ -58,7 +74,7 @@ class ViewController: UIViewController {
     }
 }
 
-extension ViewController: UITableViewDataSource, UITableViewDelegate {
+extension MainViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         characters.count
     }
@@ -75,6 +91,7 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
         let model = characters[indexPath.row]
         let viewController = ModalView()
         viewController.setupViewContent(with: model)
@@ -82,3 +99,13 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
     }
 }
 
+extension MainViewController: UISearchResultsUpdating {
+    func updateSearchResults(for searchController: UISearchController) {
+        if let desiredCharacter = searchController.searchBar.text,
+           desiredCharacter != "" {
+            fetchCharacter(with: desiredCharacter)
+        } else {
+            fetchCharacter()
+        }
+    }
+}
