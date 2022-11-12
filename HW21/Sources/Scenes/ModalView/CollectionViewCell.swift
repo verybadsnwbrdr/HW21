@@ -16,9 +16,9 @@ final class CollectionViewCell: UICollectionViewCell, FetchImageProtocol {
     
     // MARK: - SetupCell
     
-    func setupCellContent(with model: Comic) {
-        comicsTitle.text = model.title
-        fetchCharacterImage(from: model.thumbnail) { [unowned self] dataImage in
+    func setupCellContent(with comicModel: Comic) {
+        comicsTitle.text = comicModel.title
+        fetchCharacterImage(from: comicModel.thumbnail) { [unowned self] dataImage in
             comicsImage.image = UIImage(data: dataImage)
         }
     }
