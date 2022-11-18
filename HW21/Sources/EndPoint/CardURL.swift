@@ -37,7 +37,7 @@ struct CharacterURL {
     }
     
     private mutating func setQueryItems(with characterName: String) {
-        if characterName != "" {
+        if !characterName.isEmpty {
             queryItems.append(URLQueryItem(name: name, value: characterName))
         }
         queryItems.append(contentsOf: [URLQueryItem(name: "ts", value: ts),

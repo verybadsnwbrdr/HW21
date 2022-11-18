@@ -46,7 +46,6 @@ final class CollectionViewCell: UICollectionViewCell, FetchImageProtocol, ShowAl
         return label
     }()
     
-    
     // MARK: - Lifecycle
     
     override init(frame: CGRect) {
@@ -57,6 +56,12 @@ final class CollectionViewCell: UICollectionViewCell, FetchImageProtocol, ShowAl
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        comicsImage.image = UIImage(named: "question")
+        comicsTitle.text = nil
     }
     
     // MARK: - Setup
@@ -77,13 +82,5 @@ final class CollectionViewCell: UICollectionViewCell, FetchImageProtocol, ShowAl
             make.top.equalTo(comicsImage.snp.bottom).offset(5)
             make.left.right.equalTo(self)
         }
-    }
-    
-    // MARK: - PrepareForReuse
-    
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        comicsImage.image = UIImage(named: "question")
-        comicsTitle.text = nil
     }
 }

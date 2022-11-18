@@ -62,6 +62,13 @@ final class TableViewCell: UITableViewCell, FetchImageProtocol, ShowAlertProtoco
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        nameLabel.text = nil
+        idLabel.text = nil
+        characterImage.image = UIImage(named: "question")
+    }
+    
     // MARK: - Setup
     
     private func setupHierarchy() {
@@ -86,14 +93,5 @@ final class TableViewCell: UITableViewCell, FetchImageProtocol, ShowAlertProtoco
             make.left.equalTo(nameLabel)
             make.bottom.equalTo(snp.bottom).offset(-15)
         }
-    }
-    
-    // MARK: - PrepareForReuse
-    
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        nameLabel.text = nil
-        idLabel.text = nil
-        characterImage.image = UIImage(named: "question")
     }
 }

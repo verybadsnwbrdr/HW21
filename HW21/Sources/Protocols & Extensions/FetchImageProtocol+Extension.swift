@@ -5,7 +5,7 @@
 //  Created by Anton on 10.11.2022.
 //
 
-import UIKit
+//import UIKit
 import Alamofire
 
 protocol FetchImageProtocol {

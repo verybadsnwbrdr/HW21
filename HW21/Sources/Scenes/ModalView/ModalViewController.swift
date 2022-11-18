@@ -171,6 +171,7 @@ extension ModalViewController: UICollectionViewDataSource, UICollectionViewDeleg
         CGSize(width: (view.frame.width / 2) - EdgeInsets.widthSpacing,
                height: (view.frame.width / 1.5) - EdgeInsets.heightSpacing)
     }
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         UIEdgeInsets(top: EdgeInsets.topInsets,
                      left: EdgeInsets.leftAndRightInsets,
